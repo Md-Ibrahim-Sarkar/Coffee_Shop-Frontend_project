@@ -3,14 +3,12 @@ import banner from '../../assets/images/more/3.png';
 
 function Banner() {
   return (
-    <div className="max-h-[700px]">
+    <div
+      className="max-h-[700px] bg-cover bg-center"
+      style={{ backgroundImage: `url(${banner})` }}
+    >
       <div className="relative h-screen flex items-center justify-center">
-        <img
-          src={banner}
-          alt="A glass cup filled with coffee beans on a wooden surface"
-          className="absolute inset-0 w-full max-h-[700px] max-w-full h-auto  object-cover "
-        />
-        <div className="absolute top-[20%] max-[420px]:top-3  z-10 text-center max-w-2xl mx-auto">
+        <div className="text-center max-w-2xl mx-auto">
           <h1 className="title max-[420px]:text-[22px] text-3xl text-white font-RanchoFont sm:text-4xl md:text-5xl lg:text-6xl sm:mb-4">
             Would you like a Cup of Delicious Coffee?
           </h1>

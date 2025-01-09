@@ -1,12 +1,17 @@
 import { useContext } from 'react';
 import { IoMdArrowRoundBack } from 'react-icons/io';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLoaderData, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { ProductContext } from '../../context';
 
-function AddNewCoffee() {
-  const { products, setProducts } = useContext(ProductContext);
+function Edit_Coffee() {
   const navigate = useNavigate();
+  const data = useLoaderData();
+
+  const { products, setProducts } = useContext(ProductContext);
+
+  const { name, chef, price, photoLink, category, taste, supplier, _id } = data;
+
   const submitHandler = e => {
     e.preventDefault();
 
@@ -27,31 +32,36 @@ function AddNewCoffee() {
       photoLink,
       taste,
     };
-    fetch('https://coffee-shop-backend-kohl.vercel.app/coffees', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    fetch(`https://coffee-shop-backend-kohl.vercel.app/coffees/${_id}`, {
+      method: 'PUT',
+      headers: {
+        'content-type': 'application/json',
+      },
       body: JSON.stringify(newData),
     })
-      .then(response => response.json())
+      .then(res => res.json())
       .then(data => {
-        setProducts([...products, newData]);
+        const updatedProducts = products.map(product =>
+          product._id === _id ? newData : product
+        );
+        setProducts(updatedProducts);
 
-        if (data.insertedId) {
+        if (data.modifiedCount > 0) {
           navigate('/');
           Swal.fire({
             title: 'Good job!',
-            text: 'You Added the New Coffee!',
+            text: 'You Updated the product!',
             icon: 'success',
           });
+        } else {
+          alert('Failed to update coffee. Please try again.');
         }
       });
-
-    e.target.reset();
   };
 
   return (
     <div>
-      <div className="flex justify-center bg-[#F4F3F0] items-center">
+      <div className="flex justify-center bg-[#F4F3F0] items-center min-h-screen">
         <div className=" p-10 rounded-lg  w-full max-w-4xl">
           <Link
             to={'/'}
@@ -63,7 +73,7 @@ function AddNewCoffee() {
             </span>
           </Link>
           <h1 className="text-3xl font-indie-flower font-RanchoFont text-center mb-4">
-            Add New Coffee
+            Update Coffee
           </h1>
           <p className="text-center text-gray-600 mb-8">
             It is a long established fact that a reader will be distracted by
@@ -78,6 +88,7 @@ function AddNewCoffee() {
                 <input
                   type="text"
                   name="name"
+                  defaultValue={name}
                   placeholder="Enter coffee name"
                   className="w-full p-2 border border-gray-300 rounded"
                 />
@@ -87,6 +98,7 @@ function AddNewCoffee() {
                 <input
                   type="text"
                   name="chef"
+                  defaultValue={chef}
                   placeholder="Enter coffee chef"
                   className="w-full p-2 border border-gray-300 rounded"
                 />
@@ -96,6 +108,7 @@ function AddNewCoffee() {
                 <input
                   type="text"
                   name="supplier"
+                  defaultValue={supplier}
                   placeholder="Enter coffee supplier"
                   className="w-full p-2 border border-gray-300 rounded"
                 />
@@ -105,6 +118,7 @@ function AddNewCoffee() {
                 <input
                   type="text"
                   name="taste"
+                  defaultValue={taste}
                   placeholder="Enter coffee taste"
                   className="w-full p-2 border border-gray-300 rounded"
                 />
@@ -114,6 +128,7 @@ function AddNewCoffee() {
                 <input
                   type="text"
                   name="category"
+                  defaultValue={category}
                   placeholder="Enter coffee category"
                   className="w-full p-2 border border-gray-300 rounded"
                 />
@@ -123,6 +138,7 @@ function AddNewCoffee() {
                 <input
                   type="number"
                   name="price"
+                  defaultValue={price}
                   placeholder="Enter coffee Price"
                   className="w-full p-2 border border-gray-300 rounded"
                 />
@@ -132,6 +148,7 @@ function AddNewCoffee() {
                 <input
                   type="url"
                   name="photoLink"
+                  defaultValue={photoLink}
                   placeholder="Enter photo URL"
                   className="w-full p-2 border border-gray-300 rounded"
                 />
@@ -139,7 +156,7 @@ function AddNewCoffee() {
             </div>
             <div className="flex justify-center bg-[#D2B48C] hover:bg-[#bd9560] duration-300 font-RanchoFont mt-6">
               <button className="  py-1 px-6 text-xl  hover:bg-brown-600">
-                Add Coffee
+                Update Coffee
               </button>
             </div>
           </form>
@@ -149,4 +166,4 @@ function AddNewCoffee() {
   );
 }
 
-export default AddNewCoffee;
+export default Edit_Coffee;

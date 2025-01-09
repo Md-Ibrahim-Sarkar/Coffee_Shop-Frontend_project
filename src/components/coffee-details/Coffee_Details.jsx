@@ -1,8 +1,12 @@
 import { IoMdArrowRoundBack } from 'react-icons/io';
-import img from '../../assets/images/cups/Rectangle 10.png';
 import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import { ProductContext } from '../../context';
 
 function Coffee_Details() {
+  const { details } = useContext(ProductContext);
+
+  const { name, chef, price, photoLink } = details;
   return (
     <div>
       <div className="font-sans tracking-wide max-w-5xl mx-auto mt-4">
@@ -16,29 +20,21 @@ function Coffee_Details() {
           <div className="h-full">
             <div className="p-4 relative h-full flex items-center justify-center">
               <img
-                src={img}
+                src={photoLink}
                 alt="Product"
                 className="lg:w-4/5 w-full h-full rounded-xl object-contain"
               />
-
-              <div className="flex items-center justify-center gap-3 absolute md:bottom-6 bottom-0 left-0 right-0 mx-auto">
-                <div className="w-3.5 h-3.5 shrink-0 rounded-full bg-gray-300 cursor-pointer"></div>
-                <div className="w-3.5 h-3.5 shrink-0 rounded-full bg-blue-600 cursor-pointer"></div>
-                <div className="w-3.5 h-3.5 shrink-0 rounded-full bg-gray-300 cursor-pointer"></div>
-              </div>
             </div>
           </div>
 
           <div className="  py-6 px-8 ">
             <div>
-              <h2 className="sm:text-3xl text-2xl font-semibold ">
-                Acer Aspire Pro 12
-              </h2>
-              <p className="text-sm  mt-2">Well-Versed Commerce</p>
+              <h2 className="sm:text-3xl text-2xl font-semibold ">{name}</h2>
+              <p className="text-sm  mt-2">{chef}</p>
             </div>
 
             <div className="flex flex-wrap gap-4 justify-between mt-8">
-              <h3 className=" sm:text-4xl text-3xl">$730</h3>
+              <h3 className=" sm:text-4xl text-3xl">${price}</h3>
 
               <div className="flex items-center space-x-2">
                 <svg
